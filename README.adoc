@@ -1,0 +1,19 @@
+= ubi9-oauth2-proxy
+
+Simple container image build for runnig OAuth2 Proxy in a Universal Base Image (UBI).
+
+https://oauth2-proxy.github.io/oauth2-proxy/
+
+== Image
+
+Automation builds and pushes container images to quay.io:
+
+https://quay.io/repository/rhpds/ubi9-oauth2-proxy
+
+== Usage
+
+The test directory includes an example OpenShift template to create a deployment.
+
+== Local Build
+
+A Containerfile is provided as well as an OpenShift template for building with a BuildConfig and pushing to an ImageStream.

@@ -1,0 +1,47 @@
+---
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  annotations:
+    description: Build ubi9-oauth2-proxy image
+  name: ubi9-oauth2-proxy
+
+parameters:
+- name: NAME
+  value: ubi9-oauth2-proxy
+- name: GIT_REPO
+  value: https://github.com/rhpds/ubi9-oauth2-proxy.git
+- name: GIT_REF
+  value: main
+
+objects:
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: ${NAME}
+  spec:
+    lookupPolicy:
+      local: false
+
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: ${NAME}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${NAME}:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      git:
+        uri: ${GIT_REPO}
+        ref: ${GIT_REF}
+    strategy:
+      type: Docker
+      dockerStrategy:
+        dockerfilePath: Containerfile
+    triggers: []
+...
