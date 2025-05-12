@@ -21,6 +21,8 @@ parameters:
 - name: EMAIL_DOMAIN
   value: "*"
   required: true
+- name: IMAGE
+  value: quay.io/rhpds/ubi9-oauth2-proxy:latest
 - name: OIDC_ISSUER_URL
   required: true
 
@@ -28,17 +30,6 @@ objects:
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
-    annotations:
-      image.openshift.io/triggers: >-
-        [
-          {
-            "from": {
-              "kind": "ImageStreamTag",
-              "name": "ubi9-oauth2-proxy:latest"
-            },
-            "fieldPath": "spec.template.spec.containers[?(@.name==\"oauth2-proxy\")].image",
-          }
-        ]
     name: ${NAME}
   spec:
     replicas: 1
@@ -97,6 +88,7 @@ objects:
     port:
       targetPort: http
     tls:
+      insecureEdgeTerminationPolicy: Redirect
       termination: edge
     to:
       kind: Service
